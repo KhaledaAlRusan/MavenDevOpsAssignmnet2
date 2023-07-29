@@ -1,24 +1,28 @@
-# Start with a base image containing Java runtime
-FROM maven:3.5.2-jdk-8-alpine AS MAVEN_TOOL_CHAIN
-COPY pom.xml /tmp/
-COPY src /tmp/src/
-WORKDIR /tmp/
-RUN mvn package
+# Use an official maven/Java parent image
+FROM maven:3.5.2-jdk-8-alpine as build
 
-# Add Maintainer Info
-LABEL maintainer="khassana@my.centennialcollege.ca"
+# Set the working directory in the image to /app
+WORKDIR /app
 
-# Add a volume pointing to /tmp
-VOLUME /tmp
+# Copy the current directory contents into the container at /app
+COPY . /app
+
+# package our application code
+RUN mvn clean package
+
+# Use Tomcat image to deploy
+FROM tomcat:8.5.34-jre8-alpine
+
+MAINTAINER Khaled
+
+# Delete default apps in Tomcat
+RUN rm -rf /usr/local/tomcat/webapps/*
+
+# Copy WAR file
+COPY --from=build /app/target/Khaled_DevOps_Assignment2.war /usr/local/tomcat/webapps/ROOT.war
 
 # Make port 8080 available to the world outside this container
 EXPOSE 8080
 
-# The application's jar file
-ARG JAR_FILE=target/Khaled_DevOps_Assignment2-0.0.1-SNAPSHOT.jar
-
-# Add the application's jar to the container
-ADD ${JAR_FILE} Khaled_DevOps_Assignment2.jar
-
-# Run the jar file 
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/Khaled_DevOps_Assignment2.jar"]
+# Start Tomcat server
+CMD ["catalina.sh", "run"]
