@@ -29,7 +29,7 @@ pipeline {
                 withCredentials([string(credentialsId: 'docker-hub-credentials', variable: 'DOCKER_PASSWORD')]) {
                     sh "docker login -u KhaledAlrusan -p ${env.DOCKER_PASSWORD}"
                 }
-            ]
+            }  // This closing bracket was missing
         }
         stage('Docker Push') {
             steps{
