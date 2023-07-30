@@ -32,8 +32,7 @@ pipeline {
         }
         stage('Docker Push') {
             steps {
-                sh 'docker tag $dockerImage $dockerRegistry/$dockerUsername/$dockerImage'
-                sh 'docker push $dockerRegistry/$dockerUsername/$dockerImage'
+                sh 'docker push $dockerImage'
             }
         }
     }
