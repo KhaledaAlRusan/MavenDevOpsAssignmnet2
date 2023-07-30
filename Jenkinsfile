@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         dockerImage = 'khaledalrusan/assignment3:tagname'
-        registryCredentials = 'dckr_pat_keldO5fR9w2fwaj_F1wfuBqspjo'
+        registryCredentials = 'Aa@206081'
         dockerUsername = 'KhaledAlrusan'
         dockerRegistry = 'KhaledAlrusan/khaled_devops_assignment2'
     }
@@ -26,7 +26,7 @@ pipeline {
         }
         stage('Docker Login') {
             steps {
-                withCredentials([string(credentialsId: 'dckr_pat_keldO5fR9w2fwaj_F1wfuBqspjo', variable: 'DOCKER_HUB_ACCESS_TOKEN')]) {
+                withCredentials([string(credentialsId: 'Aa@206081', variable: 'DOCKER_HUB_ACCESS_TOKEN')]) {
                     sh 'echo "$DOCKER_HUB_ACCESS_TOKEN" | docker login -u yourDockerHubUsername --password-stdin'
                 }
             }
