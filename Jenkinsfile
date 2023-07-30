@@ -1,9 +1,8 @@
 pipeline {
     agent any
     environment {
-        dockerImage = ''
-        registryCredentials = 'docker-hub-credentials'
         dockerImage = 'khaled_devops_assignment2:tag'
+        registryCredentials = 'docker-hub-credentials'
         registry = 'KhaledAlrusan/khaled_devops_assignment2'
     }
     stages {
@@ -29,7 +28,7 @@ pipeline {
                 withCredentials([string(credentialsId: 'docker-hub-credentials', variable: 'DOCKER_PASSWORD')]) {
                     sh "docker login -u KhaledAlrusan -p ${env.DOCKER_PASSWORD}"
                 }
-            }  // This closing bracket was missing
+            }
         }
         stage('Docker Push') {
             steps{
