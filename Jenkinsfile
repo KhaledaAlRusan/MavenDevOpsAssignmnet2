@@ -27,13 +27,13 @@ pipeline {
         stage('Docker Login') {
             steps {
                 withCredentials([string(credentialsId: 'Aa@206081', variable: 'DOCKER_HUB_ACCESS_TOKEN')]) {
-                    sh 'echo "$DOCKER_HUB_ACCESS_TOKEN" | docker login -u yourDockerHubUsername --password-stdin'
+                    sh 'echo "$DOCKER_HUB_ACCESS_TOKEN" | docker login -u KhaledAlrusan --password-stdin'
                 }
             }
         }
         stage('Docker Push') {
             steps {
-                sh 'docker push $dockerRegistry'
+                sh 'docker push $dockerImage'
             }
         }
     }
