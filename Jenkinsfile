@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         dockerImage = 'khaled_devops_assignment2:tag'
-        registryCredentials = 'docker-hub-credentials'
+        registryCredentials = 'dckr_pat_keldO5fR9w2fwaj_F1wfuBqspjo'
         dockerUsername = 'KhaledAlrusan'
         dockerRegistry = 'KhaledAlrusan/khaled_devops_assignment2'
     }
