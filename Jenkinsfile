@@ -26,8 +26,8 @@ pipeline {
         }
         stage('Docker Login') {
             steps {
-                withCredentials([string(credentialsId: registryCredentials, variable: 'DOCKER_PASSWORD')]) {
-                    sh 'docker login -u $dockerUsername -p $DOCKER_PASSWORD'
+                withCredentials([string(credentialsId: 'dckr_pat_keldO5fR9w2fwaj_F1wfuBqspjo', variable: 'DOCKER_HUB_ACCESS_TOKEN')]) {
+                    sh 'echo "$DOCKER_HUB_ACCESS_TOKEN" | docker login -u yourDockerHubUsername --password-stdin'
                 }
             }
         }
