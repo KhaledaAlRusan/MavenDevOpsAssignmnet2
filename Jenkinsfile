@@ -3,7 +3,8 @@ pipeline {
     environment {
         dockerImage = 'khaled_devops_assignment2:tag'
         registryCredentials = 'docker-hub-credentials'
-        registry = 'KhaledAlrusan/khaled_devops_assignment2'
+        dockerUsername = 'KhaledAlrusan'
+        dockerRegistry = 'KhaledAlrusan/khaled_devops_assignment2'
     }
     stages {
         stage('Checkout') {
@@ -17,22 +18,22 @@ pipeline {
             }
         }
         stage('Docker Build') {
-            steps{
+            steps {
                 script {
                     docker.build dockerImage
                 }
             }
         }
         stage('Docker Login') {
-            steps{
-                withCredentials([usernamePassword(credentialsId: registryCredentials, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                    sh 'echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin'
+            steps {
+                withCredentials([string(credentialsId: registryCredentials, variable: 'DOCKER_PASSWORD')]) {
+                    sh 'docker login -u $dockerUsername -p $DOCKER_PASSWORD'
                 }
             }
         }
         stage('Docker Push') {
-            steps{
-                sh "docker push ${registry}:${dockerImage.split(":")[1]}"
+            steps {
+                sh 'docker push $dockerRegistry'
             }
         }
     }
