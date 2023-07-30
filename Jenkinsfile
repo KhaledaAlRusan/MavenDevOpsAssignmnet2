@@ -2,9 +2,8 @@ pipeline {
     agent any
     environment {
         dockerImage = 'khaledalrusan/assignment3:tagname'
-        registryCredentials = 'Aa@206081'
-        dockerUsername = 'KhaledAlrusan'
-        dockerRegistry = 'KhaledAlrusan/khaled_devops_assignment2'
+        dockerUsername = 'khaledalrusan'
+        dockerRegistry = 'docker.io'
     }
     stages {
         stage('Checkout') {
@@ -26,14 +25,15 @@ pipeline {
         }
         stage('Docker Login') {
             steps {
-                withCredentials([string(credentialsId: 'Aa@206081', variable: 'DOCKER_HUB_ACCESS_TOKEN')]) {
-                    sh 'echo "$DOCKER_HUB_ACCESS_TOKEN" | docker login -u KhaledAlrusan --password-stdin'
+                withCredentials([string(credentialsId: 'docker-hub-credentials', variable: 'DOCKER_HUB_ACCESS_TOKEN')]) {
+                    sh 'echo "$DOCKER_HUB_ACCESS_TOKEN" | docker login -u $dockerUsername --password-stdin'
                 }
             }
         }
         stage('Docker Push') {
             steps {
-                sh 'docker push $dockerImage'
+                sh 'docker tag $dockerImage $dockerRegistry/$dockerUsername/$dockerImage'
+                sh 'docker push $dockerRegistry/$dockerUsername/$dockerImage'
             }
         }
     }
