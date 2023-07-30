@@ -25,14 +25,14 @@ pipeline {
         }
         stage('Docker Login') {
             steps{
-                withCredentials([string(credentialsId: 'docker-hub-credentials', variable: 'DOCKER_PASSWORD')]) {
-                    sh "docker login -u KhaledAlrusan -p ${env.DOCKER_PASSWORD}"
+                withCredentials([usernamePassword(credentialsId: registryCredentials, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    sh 'echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin'
                 }
             }
         }
         stage('Docker Push') {
             steps{
-                sh "docker push ${registry}"
+                sh "docker push ${registry}:${dockerImage.split(":")[1]}"
             }
         }
     }
